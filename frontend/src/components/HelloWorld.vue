@@ -10,7 +10,8 @@
             class="upload-demo"
             drag
             :before-upload="beforeAvatarUpload"
-            action="https://jsonplaceholder.typicode.com/posts/">
+            :on-success="handleAvatarSuccess"
+            action="http://localhost:5000/">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">将书籍封面图片拖到此处，或<em>点击上传</em></div>
             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过2MB</div>
@@ -21,7 +22,7 @@
             ref="filterTable"
             :data="tableData"
             style="width: 100%"
-            stripe  
+            stripe
           >
             <el-table-column type="expand">
               <template slot-scope="props">
@@ -76,63 +77,42 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      imageUrl: '',
-      tableData: [{
-        name: '活着',
-        author: '余华',
-        address: '人民出版社',
-        tag: '相同出版社',
-        description: 'haha',
-        img: 'http://img3m0.ddimg.cn/87/27/25260630-1_w_3.jpg'
-      }, {
-        name: '人生海海',
-        author: '高小明',
-        address: '工业出版社',
-        tag: '相同作者',
-        description: 'baba',
-        img: 'http://img3m5.ddimg.cn/51/34/26921715-1_x_2.jpg'
-      }, {
-        name: '全球最美的100个地方',
-        author: '国家地理',
-        address: '北京联合出版公司',
-        tag: '相同书名',
-        description: 'lala',
-        img: 'http://img3m7.ddimg.cn/54/27/22790547-1_x_1.jpg'
-      }]
+      tableData: []
     };
   },
-    methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+  methods: {
+    handleAvatarSuccess(res, file) {
+      console.log(res)
+      this.tableData = res.tableData
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      },
-      formatter(row, column) {
-        return row.address;
-      },
-      filterTag(value, row) {
-        return row.tag === value;
-      },
-      filterHandler(value, row, column) {
-        const property = column['property'];
-        return row[property] === value;
-      },
-      selectTag(scope) {
-        if (scope.row.tag === '相同书名') return 'primary';
-        if (scope.row.tag === '相同作者') return 'success';
-        if (scope.row.tag === '相同出版社') return 'warning';
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
       }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column['property'];
+      return row[property] === value;
+    },
+    selectTag(scope) {
+      if (scope.row.tag === '相同书名') return 'primary';
+      if (scope.row.tag === '相同作者') return 'success';
+      if (scope.row.tag === '相同出版社') return 'warning';
     }
+  }
 }
 </script>
 
