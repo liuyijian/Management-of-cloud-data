@@ -13,13 +13,9 @@
 
 * 使用 flask
 
-
+* [pymongo 官方文档](https://api.mongodb.com/python/current/index.html)
 
 ## 爬虫
-
-* 使用scrapy 
-
-
 
 #####爬虫参考资料
 
@@ -32,7 +28,7 @@
 
 * [scrapy-xpath](http://www.scrapyd.cn/doc/186.html)
 
-  
+
 
 #####爬虫小范围测试debug
 

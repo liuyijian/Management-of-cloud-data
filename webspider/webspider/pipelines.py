@@ -1,5 +1,40 @@
 from scrapy.item import Item
+from scrapy.exceptions import DropItem
+from functools import reduce
+import re
 import pymongo
+
+class FormatterPipeline(object):
+    '检查空属性；修正书名，日期，价格; 去重'
+    def __init__(self):
+        self.book_set = set()
+        self.brackets_pattern = re.compile(u"\\(.*?\\)|\\{.*?}|\\[.*?]|\\（.*?）|\\「.*?」|\\【.*?】")
+        self.date_pattern = re.compile(r'\d{4}-\d{2}-\d{2}')
+    
+    def process_item(self, item, spider):
+        
+        if not reduce(lambda x,y: x and y, item.values()):
+            raise DropItem('存在空属性')
+
+        item['title'] = self.brackets_pattern.sub('', item['title'].strip().split(' ')[0])
+        pos1 = item['title'].find('(')
+        if pos1 != -1:
+            item['title'] = item['title'][:pos1]
+        pos2 = item['title'].find('（')
+        if pos2 != -1:
+            item['title'] = item['title'][:pos2] 
+
+        item['publishDate'] = self.date_pattern.search(item['publishDate']).group()
+
+        digest = item['title'] + item['author'] + item['publisher'] + item['source']
+
+        if digest in self.book_set:
+            raise DropItem('重复书籍')
+        else:
+            self.book_set.add(digest)
+
+        return item
+
 
 class MongoDBPipeline(object):
     '存储进mongodb的管道,数据库名为scrapy_data,集合名为爬虫名'
@@ -13,7 +48,8 @@ class MongoDBPipeline(object):
         db_name = spider.settings.get('MONGODB_DB_NAME', 'scrapy_data')        
         overwrite_sign = spider.settings.get('MONGODB_OVERWRITE_SIGN', False)
     
-        self.client = pymongo.MongoClient(host=host, port=port, username=username, password=password)
+        # self.client = pymongo.MongoClient(host=host, port=port, username=username, password=password)
+        self.client = pymongo.MongoClient(host=host, port=port)
         self.db = self.client[db_name]
         self.collection = self.db[spider.name]
 
