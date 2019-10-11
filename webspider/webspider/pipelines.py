@@ -16,15 +16,15 @@ class FormatterPipeline(object):
         if not reduce(lambda x,y: x and y, item.values()):
             raise DropItem('存在空属性')
 
-        item['title'] = self.brackets_pattern.sub('', item['title'].strip().split(' ')[0])
-        pos1 = item['title'].find('(')
-        if pos1 != -1:
-            item['title'] = item['title'][:pos1]
-        pos2 = item['title'].find('（')
-        if pos2 != -1:
-            item['title'] = item['title'][:pos2] 
-
-        item['publishDate'] = self.date_pattern.search(item['publishDate']).group()
+        if item['source'] == '当当网':
+            item['title'] = self.brackets_pattern.sub('', item['title'].strip().split(' ')[0])
+            pos1 = item['title'].find('(')
+            if pos1 != -1:
+                item['title'] = item['title'][:pos1]
+            pos2 = item['title'].find('（')
+            if pos2 != -1:
+                item['title'] = item['title'][:pos2] 
+            item['publishDate'] = self.date_pattern.search(item['publishDate']).group()
 
         digest = item['title'] + item['author'] + item['publisher'] + item['source']
 

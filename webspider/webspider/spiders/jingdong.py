@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from ..items import BookItem
-from scrapy_splash import SplashRequest
 import re
 
 class JingdongSpider(scrapy.Spider):
