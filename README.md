@@ -21,6 +21,8 @@
 
 * [豆瓣图书爬虫](https://github.com/40robber/ScrapyDouban)
 * [当当图书爬虫](https://github.com/HunterChao/Dangdang/blob/master/Dangdang/dangdang/spiders/dangdang.py)
+* [京东图书爬虫1](https://book.jd.com/booksort.html)
+* [京东图书爬虫2](https://www.cnblogs.com/kangoroo/p/6071501.html)
 
 * [爬虫IP代理池](https://scylla.wildcat.io/zh/latest/)
 
@@ -28,7 +30,7 @@
 
 * [scrapy-xpath](http://www.scrapyd.cn/doc/186.html)
 
-
+* [scrapy-splash](https://www.cnblogs.com/jclian91/p/8590617.html)
 
 #####爬虫小范围测试debug
 
