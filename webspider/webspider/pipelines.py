@@ -4,6 +4,7 @@ from functools import reduce
 import re
 import pymongo
 
+
 class FormatterPipeline(object):
     '检查空属性；修正书名，日期，价格; 去重'
     def __init__(self):
