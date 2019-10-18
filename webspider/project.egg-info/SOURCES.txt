@@ -1,0 +1,15 @@
+setup.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt
+webspider/__init__.py
+webspider/items.py
+webspider/middlewares.py
+webspider/pipelines.py
+webspider/settings.py
+webspider/spiders/__init__.py
+webspider/spiders/dangdang.py
+webspider/spiders/douban.py
+webspider/spiders/jingdong.py
