@@ -57,7 +57,15 @@ cd webspider
 scrapy crawl <spider-name> -o test.csv
 ```
 
+##### 爬虫代理
 
+* 使用docker安装代理池（运行后需要等待一段时间）
+
+* ```bash
+  docker run -d -p 8899:8899 -p 8081:8081 -v /var/www/scylla:/var/www/scylla --name scylla wildcat/scylla:latest
+  ```
+
+* 使用scylla的正向代理，爬虫程序中使用``http://127.0.0.1:8081``，则scylla会从代理池中选择一个代理进行爬取
 
 ##### 爬虫整合到restful api
 
