@@ -24,10 +24,10 @@ class DangdangSpider(scrapy.Spider):
             new_book = BookItem()
             new_book['title'] = i.css('.name > a::attr(title)').extract_first()
             new_book['coverUrl'] = i.css('.pic > img::attr(data-original)').extract_first() or i.css('.pic > img::attr(src)').extract_first()
-            new_book['briefing'] = i.css('.detail ::text').extract_first()
-            new_book['price'] = i.css('.price > .search_now_price ::text').extract_first()
+            # new_book['briefing'] = i.css('.detail ::text').extract_first()
+            # new_book['price'] = i.css('.price > .search_now_price ::text').extract_first()
             new_book['author'] = i.css('.search_book_author > span:nth-child(1) > a ::text').extract_first()
-            new_book['publishDate'] = i.css('.search_book_author > span:nth-child(2) ::text').extract_first()
+            # new_book['publishDate'] = i.css('.search_book_author > span:nth-child(2) ::text').extract_first()
             new_book['publisher'] = i.css('.search_book_author > span:nth-child(3) > a ::text').extract_first()
             new_book['source'] = '当当网'
             yield new_book

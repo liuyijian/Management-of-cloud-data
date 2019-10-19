@@ -12,9 +12,9 @@ class BookItem(scrapy.Item):
     title = scrapy.Field()
     author = scrapy.Field()
     publisher = scrapy.Field()
-    publishDate = scrapy.Field()
-    briefing = scrapy.Field()
-    price = scrapy.Field()
+    # publishDate = scrapy.Field()
+    # briefing = scrapy.Field()
+    # price = scrapy.Field()
     coverUrl = scrapy.Field()
     source = scrapy.Field()
 

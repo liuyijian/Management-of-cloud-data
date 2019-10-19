@@ -67,6 +67,8 @@ scrapy crawl <spider-name> -o test.csv
 
 * 使用scylla的正向代理，爬虫程序中使用``http://127.0.0.1:8081``，则scylla会从代理池中选择一个代理进行爬取
 
+* 使用scrapinghub爬取数据 ``pip install shub`` ``shub login <api-key>`` ``shub deploy 412368``
+
 ##### 爬虫整合到restful api
 
 * [scrapyrt](https://www.cnblogs.com/lxbmaomao/p/10372235.html)

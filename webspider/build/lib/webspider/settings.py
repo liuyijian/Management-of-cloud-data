@@ -114,5 +114,5 @@ MONGODB_DB_NAME = 'scrapy_data'
 MONGODB_OVERWRITE_SIGN = True
 
 # 日志配置
-LOG_FILE = 'test.log'
-LOG_LEVEL = 'INFO'
+# LOG_FILE = 'test.log'
+# LOG_LEVEL = 'INFO'

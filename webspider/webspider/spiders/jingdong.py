@@ -28,11 +28,11 @@ class JingdongSpider(scrapy.Spider):
             new_book['title'] = response.css('.sku-name ::text').extract_first().strip()
             new_book['author'] = ' '.join(response.css('.p-author > a::attr(data-name)').extract())
             new_book['publisher'] = response.css('.p-parameter li::attr(title)').extract_first()
-            new_book['publishDate'] = self.extract_date(response.css('.p-parameter li::attr(title)').extract())
+            # new_book['publishDate'] = self.extract_date(response.css('.p-parameter li::attr(title)').extract())
             new_book['coverUrl'] = response.css('.main-img > img::attr(src)').extract_first()[2:]
             new_book['source'] = '京东网'
-            new_book['price'] = self.get_price(book_id)
-            new_book['briefing'] = self.get_briefing(book_id)
+            # new_book['price'] = self.get_price(book_id)
+            # new_book['briefing'] = self.get_briefing(book_id)
             yield new_book
     
     def extract_date(self, li):

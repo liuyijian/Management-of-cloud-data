@@ -27,7 +27,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 0.5
 
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
@@ -114,5 +114,5 @@ MONGODB_DB_NAME = 'scrapy_data'
 MONGODB_OVERWRITE_SIGN = True
 
 # 日志配置
-LOG_FILE = 'test.log'
-LOG_LEVEL = 'INFO'
+# LOG_FILE = 'test.log'
+# LOG_LEVEL = 'INFO'

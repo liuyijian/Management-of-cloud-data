@@ -17,8 +17,8 @@ class FormatterPipeline(object):
         if not reduce(lambda x,y: x and y, item.values()):
             raise DropItem('存在空属性')
         
-        if item['source'] == '京东网' and item['price'].startswith('-'):
-            raise DropItem('无价格信息')
+        # if item['source'] == '京东网' and item['price'].startswith('-'):
+        #     raise DropItem('无价格信息')
 
         if item['source'] == '当当网':
             item['title'] = self.brackets_pattern.sub('', item['title'].strip().split(' ')[0])
@@ -28,7 +28,7 @@ class FormatterPipeline(object):
             pos2 = item['title'].find('（')
             if pos2 != -1:
                 item['title'] = item['title'][:pos2] 
-            item['publishDate'] = self.date_pattern.search(item['publishDate']).group()
+            # item['publishDate'] = self.date_pattern.search(item['publishDate']).group()
 
         digest = item['title'] + item['author'] + item['publisher'] + item['source']
 

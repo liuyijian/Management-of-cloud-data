@@ -19,9 +19,9 @@ class DoubanSpider(scrapy.Spider):
             info_list = item.css('.pub ::text').extract_first().split('/')
             new_book['author'] = info_list[0].strip()
             new_book['publisher'] = info_list[-3].strip()
-            new_book['publishDate'] = info_list[-2].strip()
-            new_book['price'] = info_list[-1].strip()
+            # new_book['publishDate'] = info_list[-2].strip()
+            # new_book['price'] = info_list[-1].strip()
             new_book['coverUrl'] = item.css('.pic img::attr(src)').extract_first()
             new_book['source'] = '豆瓣网'
-            new_book['briefing'] = item.css('p ::text').extract_first()
+            # new_book['briefing'] = item.css('p ::text').extract_first()
             yield new_book
