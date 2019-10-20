@@ -31,4 +31,4 @@ class RandomUserAgentMiddleware(object):
 class RandomHttpProxyMiddleware(HttpProxyMiddleware):
     '随机IP代理中间件'
     def process_request(self, request, spider):
-        request.meta['proxy'] = 'http://127.0.0.1:8081'
+        request.meta['proxy'] = spider.settings.get('IP_PROXY', 'http://127.0.0.1:8081')

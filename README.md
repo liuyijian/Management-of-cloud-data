@@ -54,7 +54,7 @@ ITEM_PIPELINES = {
 ```bash
 # 命令行执行命令
 cd webspider
-scrapy crawl <spider-name> -o test.csv
+scrapy crawl <spider-name> -o <spider-name>.csv
 ```
 
 ##### 爬虫代理
@@ -65,9 +65,20 @@ scrapy crawl <spider-name> -o test.csv
   docker run -d -p 8899:8899 -p 8081:8081 -v /var/www/scylla:/var/www/scylla --name scylla wildcat/scylla:latest
   ```
 
-* 使用scylla的正向代理，爬虫程序中使用``http://127.0.0.1:8081``，则scylla会从代理池中选择一个代理进行爬取
+* 使用scylla的正向代理，爬虫程序中使用``http://127.0.0.1:8081``，则scylla会从代理池中选择一个代理进行爬取，在``settings.py``配置如下，豆瓣网因为有IP限速限量，所以要配置好``DOWNLOAD_DELAY``，想全量爬取还需要充足的代理IP，本次爬取使用的有效代理IP为90个，平均延时300ms。
 
-* 使用scrapinghub爬取数据 ``pip install shub`` ``shub login <api-key>`` ``shub deploy 412368``
+  ```python
+  DOWNLOADER_MIDDLEWARES = {
+  	'webspider.middlewares.RandomHttpProxyMiddleware' : 300,
+  }
+  
+  IP_PROXY = 'http://127.0.0.1:8081'
+  ```
+
+* 爬取的文件如下，可以使用`mongoimport` 命令导入到数据库
+  * ``jingdong.csv``：300000条
+  * ``douban.csv``：40000条
+  * ``dangdang.csv``：200000条
 
 ##### 爬虫整合到restful api
 

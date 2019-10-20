@@ -6,7 +6,7 @@ import itertools
 
 def generate_page_url(url):
         # 全量爬将5改成100
-        li = [url[:29] + 'pg' + str(i) + '-' + url[29:] for i in range(1,5)]
+        li = [url[:29] + 'pg' + str(i) + '-' + url[29:] for i in range(1,100)]
         li.append(url)
         return li
 
@@ -14,7 +14,7 @@ class DangdangSpider(scrapy.Spider):
     name = 'dangdang'
     allowed_domains = ['dangdang.com']
     # 全量爬将5改成100
-    li = [str(i).zfill(2) for i in range(5)]
+    li = [str(i).zfill(2) for i in range(100)]
     urls_with_type = list(map(lambda x: 'http://category.dangdang.com/cp01.{}.00.00.00.00.html'.format(x), li))
     urls_with_type_with_page = sum(list(map(generate_page_url,urls_with_type)),[])
     start_urls = urls_with_type_with_page 

@@ -27,7 +27,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0.5
+DOWNLOAD_DELAY = 1
 
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
@@ -62,7 +62,7 @@ DOWNLOAD_DELAY = 0.5
 
 DOWNLOADER_MIDDLEWARES = {
    # 随机user-agent，覆盖原来的中间件
-   # 'webspider.middlewares.RandomHttpProxyMiddleware' : 300,
+   'webspider.middlewares.RandomHttpProxyMiddleware' : 300,
    'webspider.middlewares.RandomUserAgentMiddleware' : 543,
    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware' : None,
    # 'scrapy_splash.SplashCookiesMiddleware' : 723,
@@ -81,7 +81,7 @@ DOWNLOADER_MIDDLEWARES = {
 
 ITEM_PIPELINES = {
    'webspider.pipelines.FormatterPipeline': 200,
-   # 'webspider.pipelines.MongoDBPipeline': 300,
+   'webspider.pipelines.MongoDBPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -116,3 +116,6 @@ MONGODB_OVERWRITE_SIGN = True
 # 日志配置
 # LOG_FILE = 'test.log'
 # LOG_LEVEL = 'INFO'
+
+# IP正向代理配置
+IP_PROXY = 'http://127.0.0.1:32773'
