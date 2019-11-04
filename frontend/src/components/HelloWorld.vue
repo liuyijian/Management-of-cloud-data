@@ -17,6 +17,12 @@
             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过2MB</div>
           </el-upload>
         </div>
+        <el-row v-if="show_buttons" style="margin-top:15px">
+          <el-button type="primary" v-bind:plain="get_button_status(1)" v-on:click="on_click_button(1)">相同书名</el-button>
+          <el-button type="success" v-bind:plain="get_button_status(2)" v-on:click="on_click_button(2)">相同作者</el-button>
+          <el-button type="warning" v-bind:plain="get_button_status(3)" v-on:click="on_click_button(3)">相同出版社</el-button>
+        </el-row>
+
         <div>
           <el-table
             ref="filterTable"
@@ -24,47 +30,31 @@
             style="width: 100%"
             stripe
           >
-            <el-table-column type="expand">
-              <template slot-scope="props">
-                <el-form label-position="left" inline class="demo-table-expand">
-                  <el-form-item label="书名">
-                    <span>{{ props.row.name }}</span>
-                  </el-form-item>
-                  <el-form-item label="作者">
-                    <span>{{ props.row.author }}</span>
-                  </el-form-item>
-                  <el-form-item label="出版社">
-                    <span>{{ props.row.address }}</span>
-                  </el-form-item>
-                  <el-form-item label="简介">
-                    <span>{{ props.row.description }}</span>
-                  </el-form-item>
-                </el-form>
-              </template>
-            </el-table-column>
 
             <el-table-column label="封面图片">
-            　　<template slot-scope="scope">
-            　　　　<img :src="scope.row.img" width="80" height="80" class="head_pic"/>
-            　　</template>
-            </el-table-column>
-
-            <el-table-column prop="name" label="书名"></el-table-column>
-            <el-table-column prop="author" label="作者"></el-table-column>
-            <el-table-column prop="address" label="出版社" :formatter="formatter"></el-table-column>
-            <el-table-column
-              prop="tag"
-              label="筛选条件"
-              :filters="[{ text: '相同出版社', value: '相同出版社' }, { text: '相同作者', value: '相同作者' }, { text: '相同书名', value: '相同书名' }]"
-              :filter-method="filterTag"
-              filter-placement="bottom-end">
               <template slot-scope="scope">
-                <el-tag
-                  :type="selectTag(scope)"
-                  disable-transitions>{{scope.row.tag}}
-                </el-tag>
+<!--                <img :src="scope.row.img" width="80" height="80" class="head_pic"/>-->
+                <img :src="scope.row.coverUrl" height="120" class="head_pic"/>
               </template>
             </el-table-column>
+
+            <el-table-column prop="title" label="书名"></el-table-column>
+            <el-table-column prop="author" label="作者"></el-table-column>
+            <el-table-column prop="publisher" label="出版社"></el-table-column>
+<!--            <el-table-column-->
+<!--              prop="tag"-->
+<!--              label="筛选条件"-->
+<!--              :filters="[{ text: '相同出版社', value: '相同出版社' }, { text: '相同作者', value: '相同作者' }, { text: '相同书名', value: '相同书名' }]"-->
+<!--              :filter-method="filterTag"-->
+<!--              filter-placement="bottom-end">-->
+<!--              <template slot-scope="scope">-->
+<!--                <el-tag-->
+<!--                  :type="selectTag(scope)"-->
+<!--                  disable-transitions>{{scope.row.tag}}-->
+<!--                </el-tag>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+            <el-table-column prop="source" label="来源"></el-table-column>
           </el-table>
         </div>
       </el-main>
@@ -77,23 +67,34 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      tableData: []
+      tableData: [],
+      accurate_result: [],
+      same_title_result: [],
+      same_author_result: [],
+      same_publisher_result: [],
+      show_buttons: false,
+      table_status: 0
     };
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      console.log(res)
-      this.tableData = res.tableData
+      console.log(res);
+      this.tableData = res.data[0];
+      this.accurate_result = res.data[0];
+      this.same_title_result = res.data[1];
+      this.same_author_result = res.data[2];
+      this.same_publisher_result = res.data[3];
+      this.show_buttons = true;
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+        this.$message.error('上传图片只能是 JPG 格式!');
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
     },
@@ -111,7 +112,57 @@ export default {
       if (scope.row.tag === '相同书名') return 'primary';
       if (scope.row.tag === '相同作者') return 'success';
       if (scope.row.tag === '相同出版社') return 'warning';
-    }
+    },
+    get_button_status(button_id) {
+      switch (button_id) {
+        case 1:
+          return this.table_status !== 1;
+        case  2:
+          return this.table_status !== 2;
+        case 3:
+          return this.table_status !== 3;
+      }
+    },
+    on_click_button(button_id) {
+        switch (button_id) {
+        case 1:
+          if (this.table_status === 1)
+          {
+            this.table_status = 0;
+            this.tableData = this.accurate_result;
+          }
+          else
+          {
+            this.table_status = 1;
+            this.tableData = this.same_title_result;
+          }
+          break;
+        case  2:
+          if (this.table_status === 2)
+          {
+            this.table_status = 0;
+            this.tableData = this.accurate_result;
+          }
+          else
+          {
+            this.table_status = 2;
+            this.tableData = this.same_author_result;
+          }
+          break;
+        case 3:
+          if (this.table_status === 3)
+          {
+            this.table_status = 0;
+            this.tableData = this.accurate_result;
+          }
+          else
+          {
+            this.table_status = 3;
+            this.tableData = this.same_publisher_result;
+          }
+          break;
+      }
+    },
   }
 }
 </script>
