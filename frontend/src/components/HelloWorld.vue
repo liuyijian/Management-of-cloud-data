@@ -5,16 +5,22 @@
         <span style="font-size:28px; font-weight:bold;">以图搜书检索系统</span>
       </el-header>
       <el-main>
+        <el-row style="margin-bottom: 10px">
+          <el-input v-model="upload_data.title" placeholder="指定书名" style="width: 150px;margin: 5px;" class="filter-item" />
+          <el-input v-model="upload_data.author" placeholder="指定作者" style="width: 150px;margin: 5px;" class="filter-item" />
+          <el-input v-model="upload_data.publisher" placeholder="指定出版社" style="width: 150px;margin: 5px;" class="filter-item" />
+        </el-row>
         <div>
           <el-upload
             class="upload-demo"
             drag
             :before-upload="beforeAvatarUpload"
             :on-success="handleAvatarSuccess"
-            action="http://localhost:5000/">
+            action="http://localhost:5000/"
+            :data="upload_data">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">将书籍封面图片拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过2MB</div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg文件，且不超过2MB</div>
           </el-upload>
         </div>
         <el-row v-if="show_buttons" style="margin-top:15px">
@@ -73,7 +79,8 @@ export default {
       same_author_result: [],
       same_publisher_result: [],
       show_buttons: false,
-      table_status: 0
+      table_status: 0,
+      upload_data: {title: '', author: '', publisher: ''}
     };
   },
   methods: {
@@ -97,21 +104,6 @@ export default {
         this.$message.error('上传图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
-    },
-    formatter(row, column) {
-      return row.address;
-    },
-    filterTag(value, row) {
-      return row.tag === value;
-    },
-    filterHandler(value, row, column) {
-      const property = column['property'];
-      return row[property] === value;
-    },
-    selectTag(scope) {
-      if (scope.row.tag === '相同书名') return 'primary';
-      if (scope.row.tag === '相同作者') return 'success';
-      if (scope.row.tag === '相同出版社') return 'warning';
     },
     get_button_status(button_id) {
       switch (button_id) {

@@ -1,3 +1,4 @@
 .idea/
 webspider/webspider/__pycache__/
 webspider/webspider/spiders/__pycache__/
+data.csv
